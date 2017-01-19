@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Ghettoligan</title>
+	<meta charset='utf-8' />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
+</head>
+
+<style>
+#wrapper{
+	position:absolute;
+	top:0px;
+	bottom:0px;
+	left:0px;
+	right:0px;
+	overflow:hidden;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+}
+
+#myChartDiv{
+	width:400px;
+	height:400px;
+}
+</style>
+
+<body>
+	<div id="wrapper">
+		<div id="myChartDiv">
+			<canvas id="myChart"></canvas>
+		</div>
+	</div>
+</body>
+
+<script>
+
+var ctx = document.getElementById("myChart");
+
+
+	var xhr = new XMLHttpRequest();
+	var url = 'http://nile16.nu:1203/area';
+	xhr.open("GET", url, true);
+	xhr.onreadystatechange = function(){
+		if(xhr.readyState == 4 && xhr.status == 200) {
+			var stats=JSON.parse(xhr.responseText);
+			l=[];
+			d=[];
+			for (var i=0;i<10;i++) {
+				l.push(stats[i][0]);
+				d.push(stats[i][1]);
+			}
+
+			var myPieChart = new Chart(ctx,{
+				type: 'pie',
+				data: {
+							labels: l,
+							datasets: [
+								{
+									data: d,
+									backgroundColor: [
+										"#ff0000",
+										"#ff4000",
+										"#ff8000",
+										"#ffbf00",
+										"#ffff00",
+										"#bfff00",
+										"#80ff00",
+										"#40ff00",
+										"#00ff00",
+										"#00ff40",
+										"#00ff80",
+										"#00ffbf",
+										"#00ffff",
+										"#00bfff",
+										"#0080ff",
+										"#0040ff",
+										"#0000ff",
+										"#ff00bf",
+										"#ff0080",
+										"#ff0040"
+									],
+									hoverBackgroundColor: [
+										"#ff0000",
+										"#ff4000",
+										"#ff8000",
+										"#ffbf00",
+										"#ffff00",
+										"#bfff00",
+										"#80ff00",
+										"#40ff00",
+										"#00ff00",
+										"#00ff40",
+										"#00ff80",
+										"#00ffbf",
+										"#00ffff",
+										"#00bfff",
+										"#0080ff",
+										"#0040ff",
+										"#0000ff",
+										"#ff00bf",
+										"#ff0080",
+										"#ff0040"
+									]
+								}]
+						}
+					});
+
+		}
+	}
+	xhr.send();
+	
+</script>
+
+
+</html>
