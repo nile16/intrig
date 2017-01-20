@@ -23,8 +23,8 @@
 }
 
 #myChartDiv{
-	width:400px;
-	height:400px;
+	width:800px;
+	height:600px;
 }
 </style>
 
@@ -49,61 +49,62 @@ var ctx = document.getElementById("myChart");
 			var stats=JSON.parse(xhr.responseText);
 			l=[];
 			d=[];
-			for (var i=0;i<10;i++) {
+			for (var i=0;i<stats.length;i++) {
 				l.push(stats[i][0]);
 				d.push(stats[i][1]);
 			}
 
 			var myPieChart = new Chart(ctx,{
-				type: 'pie',
+				type: 'bar',
 				data: {
 							labels: l,
 							datasets: [
 								{
 									data: d,
+									label: "Polisrapporter per kvadratkilometer",
 									backgroundColor: [
 										"#ff0000",
+										"#ff0800",
+										"#ff1000",
+										"#ff1800",
+										"#ff2000",
+										"#ff2800",
+										"#ff3000",
+										"#ff3800",
 										"#ff4000",
+										"#ff4800",
+										"#ff5000",
+										"#ff5800",
+										"#ff6000",
+										"#ff6800",
+										"#ff7000",
+										"#ff7800",
 										"#ff8000",
-										"#ffbf00",
-										"#ffff00",
-										"#bfff00",
-										"#80ff00",
-										"#40ff00",
-										"#00ff00",
-										"#00ff40",
-										"#00ff80",
-										"#00ffbf",
-										"#00ffff",
-										"#00bfff",
-										"#0080ff",
-										"#0040ff",
-										"#0000ff",
-										"#ff00bf",
-										"#ff0080",
-										"#ff0040"
+										"#ff8800",
+										"#ff9000",
+										"#ff9800"
 									],
 									hoverBackgroundColor: [
 										"#ff0000",
+										"#ff0800",
+										"#ff1000",
+										"#ff1800",
+										"#ff2000",
+										"#ff2800",
+										"#ff3000",
+										"#ff3800",
 										"#ff4000",
+										"#ff4800",
+										"#ff5000",
+										"#ff5800",
+										"#ff6000",
+										"#ff6800",
+										"#ff7000",
+										"#ff7800",
 										"#ff8000",
-										"#ffbf00",
-										"#ffff00",
-										"#bfff00",
-										"#80ff00",
-										"#40ff00",
-										"#00ff00",
-										"#00ff40",
-										"#00ff80",
-										"#00ffbf",
-										"#00ffff",
-										"#00bfff",
-										"#0080ff",
-										"#0040ff",
-										"#0000ff",
-										"#ff00bf",
-										"#ff0080",
-										"#ff0040"
+										"#ff8800",
+										"#ff9000",
+										"#ff9800"
 									]
 								}]
 						}
