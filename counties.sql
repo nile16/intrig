@@ -1,4 +1,4 @@
-CREATE TABLE counties ( name varchar(128), pop integer(6), area decimal(8,2) ) engine myisam DEFAULT CHARSET=utf8 COLLATE utf8_unicode_ci;
+CREATE TABLE counties ( name varchar(128), pop integer(6), area decimal(8,2) ) engine myisam DEFAULT CHARSET=utf8 COLLATE utf8_swedish_ci;
 INSERT INTO counties ( name, pop, area )  VALUES  ( "Ale",29340,317.01 );
 INSERT INTO counties ( name, pop, area )  VALUES  ( "Alingsås",39938,472.00 );
 INSERT INTO counties ( name, pop, area )  VALUES  ( "Alvesta",19739,974.11 );

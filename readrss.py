@@ -5,7 +5,7 @@ import time
 
 #The table 'events' must be created before running this script. 
 #    CREATE TABLE `events` ( `time` int(11), `title` varchar(256), `summary` varchar(512), `city` varchar(64), `link` varchar(256))
-#        ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+#        ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_swedish_ci;
 db = MySQLdb.connect(host="localhost", user='root', passwd='apa', db='police', use_unicode=True, charset="utf8")
 cursor = db.cursor()
 
