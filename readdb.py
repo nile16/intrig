@@ -1,8 +1,8 @@
 from flask import Flask, request
-from flask_cors import CORS, cross_origin
-import MySQLdb
+from flask_cors import CORS, cross_origin #Used to allow http requsets from other servers than the one this code runs on
+import MySQLdb #Used to communicate with MySQL database
 import time
-import json
+import json #Used to format data to JSON format
 
 app = Flask(__name__)
 CORS(app)
