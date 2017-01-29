@@ -10,43 +10,35 @@
 </head>
 
 <style>
-#wrapper{
-	position:absolute;
-	top:0px;
-	bottom:0px;
-	left:0px;
-	right:0px;
-	overflow:hidden;
-	display:flex;
-	justify-content:center;
-	align-items:center;
-}
 
 #myChartDiv{
 	width:800px;
-	height:600px;
 }
+
+#murdersDiv{
+	width:800px;
+}
+
 </style>
 
 <body>
-	<div id="wrapper">
 		<div id="myChartDiv">
 			<canvas id="myChart"></canvas>
 		</div>
-	</div>
+		<div id="murdersDiv"></div>
 </body>
 
 <script>
 
-var ctx = document.getElementById("myChart");
+	var ctx = document.getElementById("myChart");
+	var mur = document.getElementById("murdersDiv");
 
 
-	var xhr = new XMLHttpRequest();
-	var url = 'http://nile16.nu:1203/area';
-	xhr.open("GET", url, true);
-	xhr.onreadystatechange = function(){
-		if(xhr.readyState == 4 && xhr.status == 200) {
-			var stats=JSON.parse(xhr.responseText);
+	var xhrArea = new XMLHttpRequest();
+	xhrArea.open("GET", 'http://nile16.nu:1203/area', true);
+	xhrArea.onreadystatechange = function(){
+		if(xhrArea.readyState == 4 && xhrArea.status == 200) {
+			var stats=JSON.parse(xhrArea.responseText);
 			l=[];
 			d=[];
 			for (var i=0;i<stats.length;i++) {
@@ -61,7 +53,7 @@ var ctx = document.getElementById("myChart");
 							datasets: [
 								{
 									data: d,
-									label: "Polisrapporter per kvadratkilometer",
+									label: "Polisrapporter/km² sedan 2017-01-19",
 									backgroundColor: [
 										"#ff0000",
 										"#ff0800",
@@ -112,8 +104,23 @@ var ctx = document.getElementById("myChart");
 
 		}
 	}
-	xhr.send();
+	xhrArea.send();
 	
+	var xhrMord = new XMLHttpRequest();
+	xhrMord.open("GET", 'http://nile16.nu:1203/mord', true);
+	xhrMord.onreadystatechange = function(){
+		if(xhrMord.readyState == 4 && xhrMord.status == 200) {
+			var stats=JSON.parse(xhrMord.responseText);
+			for (var i=0;i<stats.length;i++) {
+				mur.innerHTML+="<b>"+stats[i][1]+"</b><br>";
+				mur.innerHTML+=stats[i][2]+"<br><br>";
+			}
+
+
+		}
+	}
+	xhrMord.send();
+
 </script>
 
 
