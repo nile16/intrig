@@ -107,7 +107,7 @@
 	xhrArea.send();
 	
 	var xhrMord = new XMLHttpRequest();
-	xhrMord.open("GET", 'http://nile16.nu:1203/mord', true);
+	xhrMord.open("POST", 'http://nile16.nu:1203/search', true);
 	xhrMord.onreadystatechange = function(){
 		if(xhrMord.readyState == 4 && xhrMord.status == 200) {
 			var stats=JSON.parse(xhrMord.responseText);
@@ -119,7 +119,7 @@
 
 		}
 	}
-	xhrMord.send();
+	xhrMord.send("mord dråp");
 
 </script>
 
