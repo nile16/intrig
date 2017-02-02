@@ -1,0 +1,144 @@
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Ghettoligan</title>
+	<meta charset='utf-8' />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
+</head>
+
+<style>
+
+.chartDiv{
+	width:800px;
+}
+
+
+</style>
+
+<body>
+		<div class="chartDiv"><canvas id="totalChart"></canvas></div>
+		<div class="chartDiv"><canvas id="areaChart"></canvas></div>
+		<div class="chartDiv"><canvas id="popChart"></canvas></div>
+</body>
+
+<script>
+
+	var total = document.getElementById("totalChart");
+	var area  = document.getElementById("areaChart");
+	var pop   = document.getElementById("popChart");
+
+
+	var xhrTotal = new XMLHttpRequest();
+	xhrTotal.open("GET", 'http://nile16.nu:1203/total', true);
+	xhrTotal.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200) {
+			var stats=JSON.parse(this.responseText);
+			l=[];
+			d=[];
+			for (var i=0;i<stats.length;i++) {
+				l.push(stats[i][0]);
+				d.push(stats[i][1]);
+			}
+			drawChart(l,d,total,"Polisrapporter sedan 2017-01-19");
+		}
+	}
+	xhrTotal.send();
+
+	var xhrArea = new XMLHttpRequest();
+	xhrArea.open("GET", 'http://nile16.nu:1203/area', true);
+	xhrArea.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200) {
+			var stats=JSON.parse(this.responseText);
+			l=[];
+			d=[];
+			for (var i=0;i<stats.length;i++) {
+				l.push(stats[i][0]);
+				d.push(stats[i][2]);
+			}
+			drawChart(l,d,area,"Polisrapporter/km² sedan 2017-01-19");
+		}
+	}
+	xhrArea.send();
+
+	var xhrPop = new XMLHttpRequest();
+	xhrPop.open("GET", 'http://nile16.nu:1203/pop', true);
+	xhrPop.onreadystatechange = function(){
+		if(this.readyState == 4 && this.status == 200) {
+			var stats=JSON.parse(this.responseText);
+			l=[];
+			d=[];
+			for (var i=0;i<stats.length;i++) {
+				l.push(stats[i][0]);
+				d.push(stats[i][3]);
+			}
+			drawChart(l,d,pop,"Polisrapporter/1,000 invånare sedan 2017-01-19");
+		}
+	}
+	xhrPop.send();
+
+	function drawChart(l,d,chartId,lab){	
+		var myPieChart = new Chart(chartId,{
+		type: 'bar',
+		data: {
+					labels: l,
+					datasets: [
+						{
+							data: d,
+							label: lab,
+							backgroundColor: [
+								"#ff0000",
+								"#ff0800",
+								"#ff1000",
+								"#ff1800",
+								"#ff2000",
+								"#ff2800",
+								"#ff3000",
+								"#ff3800",
+								"#ff4000",
+								"#ff4800",
+								"#ff5000",
+								"#ff5800",
+								"#ff6000",
+								"#ff6800",
+								"#ff7000",
+								"#ff7800",
+								"#ff8000",
+								"#ff8800",
+								"#ff9000",
+								"#ff9800"
+							],
+							hoverBackgroundColor: [
+								"#ff0000",
+								"#ff0800",
+								"#ff1000",
+								"#ff1800",
+								"#ff2000",
+								"#ff2800",
+								"#ff3000",
+								"#ff3800",
+								"#ff4000",
+								"#ff4800",
+								"#ff5000",
+								"#ff5800",
+								"#ff6000",
+								"#ff6800",
+								"#ff7000",
+								"#ff7800",
+								"#ff8000",
+								"#ff8800",
+								"#ff9000",
+								"#ff9800"
+							]
+						}]
+				}
+			});
+	}
+	
+	
+</script>
+
+
+</html>

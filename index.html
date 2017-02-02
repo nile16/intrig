@@ -1,127 +1,70 @@
-
 <!DOCTYPE html>
 
-<html>
-
 <head>
-	<title>Ghettoligan</title>
-	<meta charset='utf-8' />
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
+
+  <title>NojKollen</title>
+  <meta charset='utf-8' />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
 </head>
 
-<style>
-
-#myChartDiv{
-	width:800px;
-}
-
-#murdersDiv{
-	width:800px;
-}
-
-</style>
-
 <body>
-		<div id="myChartDiv">
-			<canvas id="myChart"></canvas>
-		</div>
-		<div id="murdersDiv"></div>
+
+	<!-- Text area where the words to search for are entered --> 
+	<input id="inputText" type="text" size="50" placeholder="Sök efter valfritt brott och/eller kommun!" >
+	
+	<!-- When the button is pressed the runSearch function is called with the content of the text area as argument --> 
+	<button onclick="runSearch(document.getElementById('inputText').value);" >Search</button>
+	
+	<!-- Div used to display the search result -->
+	<div id="resultDiv"></div>
+	
 </body>
 
 <script>
 
-	var ctx = document.getElementById("myChart");
-	var mur = document.getElementById("murdersDiv");
+// The purpose of this function is to contact the server and send the search string to the server 
+// and then wait for a response with status okay. When a response has been receieved the response 
+// is printed to the screen. This function is executed when the search button is pressed.
+function runSearch(searchString){
 
-
-	var xhrArea = new XMLHttpRequest();
-	xhrArea.open("GET", 'http://nile16.nu:1203/area', true);
-	xhrArea.onreadystatechange = function(){
-		if(xhrArea.readyState == 4 && xhrArea.status == 200) {
-			var stats=JSON.parse(xhrArea.responseText);
-			l=[];
-			d=[];
-			for (var i=0;i<stats.length;i++) {
-				l.push(stats[i][0]);
-				d.push(stats[i][1]);
-			}
-
-			var myPieChart = new Chart(ctx,{
-				type: 'bar',
-				data: {
-							labels: l,
-							datasets: [
-								{
-									data: d,
-									label: "Polisrapporter/km² sedan 2017-01-19",
-									backgroundColor: [
-										"#ff0000",
-										"#ff0800",
-										"#ff1000",
-										"#ff1800",
-										"#ff2000",
-										"#ff2800",
-										"#ff3000",
-										"#ff3800",
-										"#ff4000",
-										"#ff4800",
-										"#ff5000",
-										"#ff5800",
-										"#ff6000",
-										"#ff6800",
-										"#ff7000",
-										"#ff7800",
-										"#ff8000",
-										"#ff8800",
-										"#ff9000",
-										"#ff9800"
-									],
-									hoverBackgroundColor: [
-										"#ff0000",
-										"#ff0800",
-										"#ff1000",
-										"#ff1800",
-										"#ff2000",
-										"#ff2800",
-										"#ff3000",
-										"#ff3800",
-										"#ff4000",
-										"#ff4800",
-										"#ff5000",
-										"#ff5800",
-										"#ff6000",
-										"#ff6800",
-										"#ff7000",
-										"#ff7800",
-										"#ff8000",
-										"#ff8800",
-										"#ff9000",
-										"#ff9800"
-									]
-								}]
-						}
-					});
-
-		}
-	}
-	xhrArea.send();
+	// Clear resultDiv from text from any previous search
+	document.getElementById('resultDiv').innerHTML="";
 	
-	var xhrMord = new XMLHttpRequest();
-	xhrMord.open("POST", 'http://nile16.nu:1203/search', true);
-	xhrMord.onreadystatechange = function(){
-		if(xhrMord.readyState == 4 && xhrMord.status == 200) {
-			var stats=JSON.parse(xhrMord.responseText);
-			for (var i=0;i<stats.length;i++) {
-				mur.innerHTML+="<b>"+stats[i][1]+"</b><br>";
-				mur.innerHTML+=stats[i][2]+"<br><br>";
+	// Create an instance of the XMLHttpRequset class. See http://www.w3schools.com/xml/xml_http.asp for info 
+	var xhrSearch = new XMLHttpRequest();
+	
+	// Specify POST request and the server's url
+	xhrSearch.open("POST", 'http://nile16.nu:1203/search', true);
+	
+	// Specify what will happen when a response from the server arrives
+	xhrSearch.onreadystatechange = function(){
+	
+		// If the status code is okay (200) then start print the result, otherwise do nothing (keep waiting) 
+		if(this.readyState == 4 && this.status == 200) {
+		
+			// The response text was sent as JSON from the server and this converts the JSON back to an array of arrays
+			var result=JSON.parse(xhrSearch.responseText);
+			
+			// Loop through the array. Each array represents one search hit.
+			for (var i=0;i<result.length;i++) {
+			
+				// Add the search hit to the resultDiv with minor formating
+				//   Index 0 is a unix timestamp representing the time when the police report was added (not used)
+				//   Index 1 is the title of the police report
+				//   Index 2 is the summary text
+				//   Index 3 is the name of the county (not used)
+				//   Index 4 is the url to the police report (not used)
+				document.getElementById('resultDiv').innerHTML+="<b>"+result[i][1]+"</b><br>"+result[i][2]+"<br><br>";
 			}
-
-
+			// If the result was empty make a note of it in the resultDiv
+			if (result=="") document.getElementById('resultDiv').innerHTML="The search for '"+searchString+"' returned nothing.";
 		}
 	}
-	xhrMord.send("mord dråp");
+	// Execute the request and send the search string as argument
+	xhrSearch.send(searchString);
+}
 
 </script>
-
 
 </html>

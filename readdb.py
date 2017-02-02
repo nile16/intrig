@@ -7,22 +7,60 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route('/area')
-def byarea():
+@app.route('/total')
+def total():
     db = MySQLdb.connect(host="localhost", user='root', passwd='apa', db='police', use_unicode=True, charset="utf8")
     cursor = db.cursor()
-    cursor.execute("select events.county,(count(*)/counties.area) as e_per_a,count(*) as events,counties.pop,counties.area from events,counties where counties.name=events.county group by events.county order by e_per_a desc limit 20;")
+    cursor.execute("select events.county,count(*) as events,(count(*)/counties.area) as e_per_a,(count(*)/counties.pop)*10000 as e_per_p,counties.pop,counties.area from events,counties where counties.name=events.county group by events.county order by events desc limit 20;")
     result=cursor.fetchall()
     y=[]
     for data in result:
         x=[]
-        x.append(data[0].encode('utf-8'))
-        x.append(str(data[1]))
-        x.append(str(data[2]))
-        x.append(str(data[3]))
-        x.append(str(data[4]))
+        x.append(data[0].encode('utf-8')) #County
+        x.append(str(data[1]))            #e
+        x.append(str(data[2]))            #e/a
+        x.append(str(data[3]))            #e/p
+        x.append(str(data[4]))            #pop
+        x.append(str(data[5]))            #area
         y.append(x)
     return(json.dumps(y))
+
+@app.route('/area')
+def area():
+    db = MySQLdb.connect(host="localhost", user='root', passwd='apa', db='police', use_unicode=True, charset="utf8")
+    cursor = db.cursor()
+    cursor.execute("select events.county,count(*) as events,(count(*)/counties.area) as e_per_a,(count(*)/counties.pop)*10000 as e_per_p,counties.pop,counties.area from events,counties where counties.name=events.county group by events.county order by e_per_a desc limit 20;")
+    result=cursor.fetchall()
+    y=[]
+    for data in result:
+        x=[]
+        x.append(data[0].encode('utf-8')) #County
+        x.append(str(data[1]))            #e
+        x.append(str(data[2]))            #e/a
+        x.append(str(data[3]))            #e/p
+        x.append(str(data[4]))            #pop
+        x.append(str(data[5]))            #area
+        y.append(x)
+    return(json.dumps(y))
+
+@app.route('/pop')
+def pop():
+    db = MySQLdb.connect(host="localhost", user='root', passwd='apa', db='police', use_unicode=True, charset="utf8")
+    cursor = db.cursor()
+    cursor.execute("select events.county,count(*) as events,(count(*)/counties.area) as e_per_a,(count(*)/counties.pop)*1000 as e_per_p,counties.pop,counties.area from events,counties where counties.name=events.county group by events.county order by e_per_p desc limit 20;")
+    result=cursor.fetchall()
+    y=[]
+    for data in result:
+        x=[]
+        x.append(data[0].encode('utf-8')) #County
+        x.append(str(data[1]))            #e
+        x.append(str(data[2]))            #e/a
+        x.append(str(data[3]))            #e/p
+        x.append(str(data[4]))            #pop
+        x.append(str(data[5]))            #area
+        y.append(x)
+    return(json.dumps(y))
+
 
 @app.route('/search',methods = ['POST'])
 def search():
