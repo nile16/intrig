@@ -8,13 +8,27 @@
 
 </head>
 
+<style>
+
+body {
+	width:700px;
+	margin:0 auto;
+	text-align:center;
+}
+
+</style>
+
 <body>
+
+	<h1>Nojkollen</h1>
 
 	<!-- Text area where the words to search for are entered --> 
 	<input id="inputText" type="text" size="50" placeholder="Sök efter valfritt brott och/eller kommun!" >
 	
 	<!-- When the button is pressed the runSearch function is called with the content of the text area as argument --> 
-	<button onclick="runSearch(document.getElementById('inputText').value);" >Search</button>
+	<button onclick="runSearch(document.getElementById('inputText').value);" >Search</button><br>
+	
+	<a href="diagram.html">20-I-Topp stapeldiagram</a><br><br>
 	
 	<!-- Div used to display the search result -->
 	<div id="resultDiv"></div>
