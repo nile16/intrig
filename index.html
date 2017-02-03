@@ -5,64 +5,66 @@
   <title>NojKollen</title>
   <meta charset='utf-8' />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
+  <link href="style.css" type= "text/css" rel= "stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script
+  src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+    </script>
 </head>
 
-<style>
-
-body {
-	width:700px;
-	margin:0 auto;
-	text-align:center;
-}
-
-</style>
-
 <body>
+<div class="parallax">
+    <div class="parallax-body">
+      <div class="jumbotron text-center">
+        <h1>NojKollen</h1>
+      </div>
+      <div class="form-group">
+        <!-- Text area where the words to search for are entered -->
+        <input id="inputText" type="text" size="50" placeholder="Sök efter valfritt brott och/eller kommun!" >
+          <!-- When the button is pressed the runSearch function is called with the content of the text area as argument -->
+        <button class="btn btn-danger" onclick="runSearch(document.getElementById('inputText').value);" >Search</button>
+      </div>
+      <div id="diagram">
+        <input type="button" class="btn btn-default" value="Topp 20 kommuner" onclick="location='diagram.html'"/>
+      </div>
+    </div>
+  </div>
 
-	<h1>Nojkollen</h1>
-
-	<!-- Text area where the words to search for are entered --> 
-	<input id="inputText" type="text" size="50" placeholder="Sök efter valfritt brott och/eller kommun!" >
-	
-	<!-- When the button is pressed the runSearch function is called with the content of the text area as argument --> 
-	<button onclick="runSearch(document.getElementById('inputText').value);" >Search</button><br>
-	
-	<a href="diagram.html">20-I-Topp stapeldiagram</a><br><br>
-	
 	<!-- Div used to display the search result -->
 	<div id="resultDiv"></div>
-	
+
 </body>
 
 <script>
 
-// The purpose of this function is to contact the server and send the search string to the server 
-// and then wait for a response with status okay. When a response has been receieved the response 
+// The purpose of this function is to contact the server and send the search string to the server
+// and then wait for a response with status okay. When a response has been receieved the response
 // is printed to the screen. This function is executed when the search button is pressed.
 function runSearch(searchString){
 
 	// Clear resultDiv from text from any previous search
 	document.getElementById('resultDiv').innerHTML="";
-	
-	// Create an instance of the XMLHttpRequset class. See http://www.w3schools.com/xml/xml_http.asp for info 
+
+	// Create an instance of the XMLHttpRequset class. See http://www.w3schools.com/xml/xml_http.asp for info
 	var xhrSearch = new XMLHttpRequest();
-	
+
 	// Specify POST request and the server's url
 	xhrSearch.open("POST", 'http://nile16.nu:1203/search', true);
-	
+
 	// Specify what will happen when a response from the server arrives
 	xhrSearch.onreadystatechange = function(){
-	
-		// If the status code is okay (200) then start print the result, otherwise do nothing (keep waiting) 
+
+		// If the status code is okay (200) then start print the result, otherwise do nothing (keep waiting)
 		if(this.readyState == 4 && this.status == 200) {
-		
+
 			// The response text was sent as JSON from the server and this converts the JSON back to an array of arrays
 			var result=JSON.parse(xhrSearch.responseText);
-			
+
 			// Loop through the array. Each array represents one search hit.
 			for (var i=0;i<result.length;i++) {
-			
+
 				// Add the search hit to the resultDiv with minor formating
 				//   Index 0 is a unix timestamp representing the time when the police report was added (not used)
 				//   Index 1 is the title of the police report

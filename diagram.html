@@ -4,25 +4,31 @@
 <html>
 
 <head>
-	<title>20-I-Topp</title>
+	<title>Ghettoligan</title>
 	<meta charset='utf-8' />
+	<link href="style.css" type= "text/css" rel= "stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.js"></script>
 </head>
 
-<style>
-
-body {
-	width:700px;
-	margin:0 auto;
-	text-align:center;
-}
-
-</style>
-
 <body>
-		<div class="chartDiv"><canvas id="totalChart"></canvas></div>
-		<div class="chartDiv"><canvas id="areaChart"></canvas></div>
-		<div class="chartDiv"><canvas id="popChart"></canvas></div>
+	<div class="jumbotron-2 text-center">
+		<h1>Statistik över polisrapporter i Sverige</h1>
+		<h4>Uppdateras i realtid</h4>
+	</div>
+
+	<div class="chartDiv">
+		<p>Topp 20 kommuner för flest polisrapporter sedan 2017-01-19</p>
+		<canvas id="totalChart"></canvas>
+	</div>
+	<div class="chartDiv">
+		<p>Topp 20 kommuner för flest polisrapporter per kvadratkilometer
+		sedan 2017-01-19</p>
+		<canvas id="areaChart"></canvas>
+	</div>
+	<div class="chartDiv">
+		<p>Topp 20 kommuner för flest polisrapporter per invånare sedan 2017-01-19</p>
+		<canvas id="popChart"></canvas>
+	</div>
 </body>
 
 <script>
@@ -80,7 +86,7 @@ body {
 	}
 	xhrPop.send();
 
-	function drawChart(l,d,chartId,lab){	
+	function drawChart(l,d,chartId,lab){
 		var myPieChart = new Chart(chartId,{
 		type: 'bar',
 		data: {
@@ -137,8 +143,8 @@ body {
 				}
 			});
 	}
-	
-	
+
+
 </script>
 
 
